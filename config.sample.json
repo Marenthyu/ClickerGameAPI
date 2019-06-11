@@ -1,0 +1,10 @@
+{
+  "database": {
+    "host": "127.0.0.1",
+    "database": "mydb",
+    "schema": "incremental",
+    "user": "username",
+    "password": "hunter2",
+    "port": 5432
+  }
+}
