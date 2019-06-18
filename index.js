@@ -222,7 +222,7 @@ function loadHandler(req, res, query) {
             res.writeHead(400, "Missing Parameter", {"Content-Type": "application/json"});
             res.end(JSON.stringify({"success": false, "error": 'Missing query parameter "user"'}));
         } else {
-            db.query("SELECT * FROM \"user\" WHERE \"user\".name = $1", [query.user], (err, result) => {
+            db.query("SELECT * FROM \"user\" WHERE \"user\".id = $1", [query.user], (err, result) => {
                 if (err) {
                     res.writeHead(500, "OK", {"Content-Type": "application/json"});
                     res.end(JSON.stringify({
