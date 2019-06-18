@@ -6,5 +6,6 @@
     "user": "username",
     "password": "hunter2",
     "port": 5432
-  }
+  },
+  "port": 8080
 }
