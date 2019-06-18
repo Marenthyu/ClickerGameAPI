@@ -27,7 +27,7 @@ function errorWithMessage(res, code, status, err, message) {
     res.end(JSON.stringify(retobject));
 }
 
-function saveHandler(req, res, query) {
+function saveHandler(req, res) {
     console.log("Got request to save");
     if (req.method === "PUT") {
         let body = '';
@@ -60,7 +60,7 @@ function saveHandler(req, res, query) {
                 errorWithMessage(res, 400, "Missing Required Data", "Missing required Data field for saving", "Missing required field id, currency, units or skills");
                 return
             } else {
-                db.query('BEGIN', (err, result) => {
+                db.query('BEGIN', (err) => {
                     const shouldAbort = (abortErr) => {
                         if (abortErr) {
                             db.query("ROLLBACK");
@@ -94,7 +94,7 @@ function saveHandler(req, res, query) {
                                         query = query + (newUnits.join(", ")) + " ON CONFLICT ON CONSTRAINT has_unit_pk DO UPDATE SET amount = excluded.amount";
                                         console.log("The full query will be:", query);
                                         console.log("The param Array is:", paramArray);
-                                        db.query(query, paramArray, (err, result) => {
+                                        db.query(query, paramArray, (err) => {
                                             if (!shouldAbort(err)) {
                                                 try {
                                                     let skills = newData.skills;
@@ -117,10 +117,10 @@ function saveHandler(req, res, query) {
                                                     query = query + (newSkills.join(", ")) + " ON CONFLICT ON CONSTRAINT has_skill_pk DO UPDATE SET last_activation = excluded.last_activation, skill_level = excluded.skill_level";
                                                     console.log("The full query will be:", query);
                                                     console.log("The param Array is:", paramArray);
-                                                    db.query(query, paramArray, (err, result) => {
+                                                    db.query(query, paramArray, (err) => {
                                                         if (!shouldAbort(err)) {
                                                             console.log("Currency: ", newData.currency);
-                                                            db.query("UPDATE \"user\" SET currency = $1 WHERE id = $2", [newData.currency, newData.id], (err, result) => {
+                                                            db.query("UPDATE \"user\" SET currency = $1 WHERE id = $2", [newData.currency, newData.id], (err) => {
                                                                 if (!shouldAbort(err)) {
                                                                     db.query("COMMIT");
                                                                     res.writeHead(200, "OK", {"Content-Type": "application/json"});
@@ -288,7 +288,7 @@ http.createServer((req, res) => {
     let q = url.parse(req.url, true);
     switch (q.pathname) {
         case "/save": {
-            saveHandler(req, res, q.query);
+            saveHandler(req, res);
             break;
         }
         case "/load": {
