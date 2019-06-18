@@ -188,12 +188,23 @@ function saveHandler(req, res, query) {
                     errorWithMessage(res, 500, "Server Error", e, "Error while parsing your sent data. Aborting.");
                     return
                 }
-                res.writeHead(200, "OK", {"Content-Type": "application/json"});
-                res.end(JSON.stringify({
-                    success: true,
-                    message: "Received your data for a new user. ID will be generated...",
-                    savedData: newData
-                }));
+                if (!newData.hasOwnProperty('name')) {
+                    errorWithMessage(res, 400, "Missing Required Data", "Missing name in parsed data", "Missing name in parsed data");
+                    return;
+                }
+                db.query("INSERT INTO \"user\"(name) VALUES ($1) RETURNING id", [newData.name], (err, result) => {
+                    if (err) {
+                        errorWithMessage(res, 500, "Server Error", err, "Error while adding new user");
+                        return
+                    }
+                    res.writeHead(200, "OK", {"Content-Type": "application/json"});
+                    res.end(JSON.stringify({
+                        success: true,
+                        message: "Added new user",
+                        createdId: result.rows[0].id
+                    }));
+                });
+
             }
         );
 
