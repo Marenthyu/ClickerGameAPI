@@ -220,12 +220,12 @@ function loadHandler(req, res, query) {
     console.log("Got request to load");
     if (req.method === "GET") {
         if (!Object.prototype.hasOwnProperty.call(query, "user")) {
-            res.writeHead(400, "Missing Parameter", {"Content-Type": "application/json"});
+            res.writeHead(400, "Missing Parameter", {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
             res.end(JSON.stringify({"success": false, "error": 'Missing query parameter "user"'}));
         } else {
             db.query("SELECT * FROM \"user\" WHERE \"user\".id = $1", [query.user], (err, result) => {
                 if (err) {
-                    res.writeHead(500, "OK", {"Content-Type": "application/json"});
+                    res.writeHead(500, "OK", {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
                     res.end(JSON.stringify({
                         "success": false,
                         "message": "Error during database query. Contact an admin."
@@ -237,7 +237,7 @@ function loadHandler(req, res, query) {
                         let userinfo = result[0];
                         db.query("SELECT * FROM has_unit JOIN unit ON has_unit.unit_id = unit.id WHERE has_unit.user_id = $1", [userinfo.id], (err, result) => {
                             if (err) {
-                                res.writeHead(500, "OK", {"Content-Type": "application/json"});
+                                res.writeHead(500, "OK", {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
                                 res.end(JSON.stringify({
                                     "success": false,
                                     "message": "Error during database query. Contact an admin."
@@ -247,7 +247,7 @@ function loadHandler(req, res, query) {
                                 let units = result.rows;
                                 db.query("SELECT * FROM has_skill JOIN skill ON has_skill.skill_id = skill.id WHERE has_skill.user_id = $1", [userinfo.id], (err, result) => {
                                     if (err) {
-                                        res.writeHead(500, "OK", {"Content-Type": "application/json"});
+                                        res.writeHead(500, "OK", {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
                                         res.end(JSON.stringify({
                                             "success": false,
                                             "message": "Error during database query. Contact an admin."
@@ -255,7 +255,7 @@ function loadHandler(req, res, query) {
                                         console.error(err);
                                     } else {
                                         let skills = result.rows;
-                                        res.writeHead(200, "OK", {"Content-Type": "application/json"});
+                                        res.writeHead(200, "OK", {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
                                         res.end(JSON.stringify({
                                             "success": true,
                                             "message": "We got your request",
