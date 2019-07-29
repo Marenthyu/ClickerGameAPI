@@ -19,7 +19,7 @@ db.connect((err) => {
 
 function errorWithMessage(res, code, status, err, message) {
     console.error(err);
-    res.writeHead(code, status, {"Content-Type": "application/json"});
+    res.writeHead(code, status, {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
     let retobject = {success: false, message: message};
     if (err.hasOwnProperty('detail')) {
         retobject.detail = err.detail;
@@ -198,7 +198,7 @@ function saveHandler(req, res) {
                         errorWithMessage(res, 500, "Server Error", err, "Error while adding new user");
                         return
                     }
-                    res.writeHead(201, "Created", {"Content-Type": "application/json"});
+                    res.writeHead(201, "Created", {"Content-Type": "application/json", "Access-Control-Allow-Origin":"*"});
                     res.end(JSON.stringify({
                         success: true,
                         message: "Added new user",
@@ -210,7 +210,7 @@ function saveHandler(req, res) {
         );
 
     } else {
-        res.writeHead(405, "Method Not Allowed", {"Allowed-Methods": "POST, PUT"});
+        res.writeHead(405, "Method Not Allowed", {"Allowed-Methods": "POST, PUT", "Access-Control-Allow-Origin":"*"});
         res.end();
 
     }
