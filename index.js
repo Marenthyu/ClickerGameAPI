@@ -185,6 +185,7 @@ function saveHandler(req, res) {
                     newData = JSON.parse(body);
                 } catch (e) {
                     console.error("Error during post data parsing as JSON:");
+                    console.error(JSON.stringify(body));
                     errorWithMessage(res, 500, "Server Error", e, "Error while parsing your sent data. Aborting.");
                     return
                 }
