@@ -161,7 +161,8 @@ function saveHandler(req, res) {
             }
 
         });
-    } else if (req.method === "POST") {
+    }
+    else if (req.method === "POST") {
         let body = '';
         let aborted = false;
         req.on('data', function (data) {
@@ -209,8 +210,11 @@ function saveHandler(req, res) {
             }
         );
 
+    } else if (req.method === "OPTIONS") {
+        res.writeHead(200, "OK", {"Allowed-Methods": "POST, PUT, OPTIONS", "Access-Control-Allow-Origin":"*"});
+        res.end("Yes, yes, preflight is ok.");
     } else {
-        res.writeHead(405, "Method Not Allowed", {"Allowed-Methods": "POST, PUT", "Access-Control-Allow-Origin":"*"});
+        res.writeHead(405, "Method Not Allowed", {"Allowed-Methods": "POST, PUT, OPTIONS", "Access-Control-Allow-Origin":"*"});
         res.end();
 
     }
