@@ -197,7 +197,7 @@ function saveHandler(req, res) {
                         errorWithMessage(res, 500, "Server Error", err, "Error while adding new user");
                         return
                     }
-                    res.writeHead(200, "OK", {"Content-Type": "application/json"});
+                    res.writeHead(201, "Created", {"Content-Type": "application/json"});
                     res.end(JSON.stringify({
                         success: true,
                         message: "Added new user",
