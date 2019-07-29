@@ -123,7 +123,7 @@ function saveHandler(req, res) {
                                                             db.query("UPDATE \"user\" SET currency = $1 WHERE id = $2", [newData.currency, newData.id], (err) => {
                                                                 if (!shouldAbort(err)) {
                                                                     db.query("COMMIT");
-                                                                    res.writeHead(200, "OK", {"Content-Type": "application/json"});
+                                                                    res.writeHead(200, "OK", {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
                                                                     res.end(JSON.stringify({
                                                                         success: true,
                                                                         message: "Found your user, everything updated successfully.",
