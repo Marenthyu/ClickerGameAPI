@@ -10,6 +10,6 @@
   "author": "",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "pg": "^7.11.0"
+    "pg": "^8.11.0"
   }
 }
